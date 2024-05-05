@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran</title>
+</head>
+<body>
+    <form id="registrationForm" action="proses_pendaftaran.php" method="post">
+            <div class="form-group">
+                <label for="nim">Nim:</label>
+                <input type="text" id="nim" name="nim">
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama Lengkap:</label>
+                <input type="text" id="nama" name="nama">
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="tempat">Tempat Tanggal Lahir:</label>
+                <input type="text" id="tempat" name="tempat">
+                <input type="date" id="tanggal" name="tanggal" min="1989-01-01" max="2020-12-31" pattern="\d{2}-\d{2}-\d{4}">
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat:</label>
+                <textarea id="alamat" name="alamat"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="jk">Gender:</label>
+                <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki">
+                <label class="inline-label" for="laki-laki">Laki-laki</label>
+                <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan">
+                <label class="inline-label" for="perempuan">Perempuan</label>
+            </div>
+            <div class="form-group">
+                <button type="submit">Kirim</button>
+            </div>
+    </form>
+
+    <script>
+        // Fungsi untuk menyimpan data ke dalam proses_pendaftaran
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Fungsi untuk mendapatkan nilai dari elemen input
+        function getInputValue(id) {
+            return document.getElementById(id).value;
+        }
+
+        // Menyimpan data ke dalam cookies saat formulir disubmit
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Menghentikan aksi bawaan formulir
+            setCookie("nim", getInputValue("nim"), 30); // Simpan NIM ke dalam cookies selama 30 hari
+            setCookie("nama", getInputValue("nama"), 30); // Simpan Nama ke dalam cookies selama 30 hari
+            setCookie("email", getInputValue("email"), 30); // Simpan Email ke dalam cookies selama 30 hari
+            setCookie("tempat", getInputValue("tempat"), 30); // Simpan Tempat Lahir ke dalam cookies selama 30 hari
+            setCookie("tanggal", getInputValue("tanggal"), 30); // Simpan Tanggal Lahir ke dalam cookies selama 30 hari
+            setCookie("alamat", getInputValue("alamat"), 30); // Simpan Alamat ke dalam cookies selama 30 hari
+            var gender = document.querySelector('input[name="jenis_kelamin"]:checked'); // Mendapatkan nilai gender yang dipilih
+            if (gender !== null) {
+                setCookie("jenis_kelamin", gender.value, 30); // Simpan Gender ke dalam cookies selama 30 hari
+            }
+            // Lanjutkan proses submit formulir
+            this.submit();
+        });
+    </script>
+</body>
+</html>
